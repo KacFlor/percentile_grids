@@ -82,6 +82,8 @@ class SecondWindow(QDialog):
         layout = QVBoxLayout()
         self.lineEdit1 = QLineEdit()
         validator = QDoubleValidator()
+        validator.setDecimals(2)
+        validator.setLocale(QLocale(QLocale.English))
         self.lineEdit1.setValidator(validator)
         self.lineEdit2 = QLineEdit()
         self.lineEdit2.setValidator(validator)
