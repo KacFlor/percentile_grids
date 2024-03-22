@@ -70,7 +70,7 @@ def frame(x,y):
 
     fig = plt.gcf()
     fig.tight_layout()
-    fig.savefig('siatka_centylowa.png')
+    fig.savefig('percentile_grid.png')
     plt.show(block=False)
     plt.show()
 
