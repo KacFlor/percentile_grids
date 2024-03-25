@@ -33,7 +33,7 @@ centyl_97_waga = [20, 21.5, 23, 24.9, 26.75, 29.75, 32.1, 34.9, 37.5, 40.5, 43.5
 
 
 
-def frame(x,y):
+def frame(x,y,z,a):
     plt.figure(figsize=(6, 9))
     plt.plot(centyl_3_wiek, centyl_3_waga, label='Centyl 3', color='black')
     plt.plot(centyl_10_wiek, centyl_10_waga, label='Centyl 10', color='black',  linestyle='--')
@@ -42,12 +42,13 @@ def frame(x,y):
     plt.plot(centyl_75_wiek, centyl_75_waga, label='Centyl 75', color='black',  linestyle=':')
     plt.plot(centyl_90_wiek, centyl_90_waga, label='Centyl 90', color='black',  linestyle='--')
     plt.plot(centyl_97_wiek, centyl_97_waga, label='Centyl 97', color='black',  linestyle='solid')
-    plt.scatter(x, y, label='Punkty XY', color='red', s=5)
-    #if(z == 2):
-    #    plt.plot(results[0], results[1], label='krzywa', color='red', linestyle=':')
-    #if(z == 3):
-    #    for i in range(results[2]):
-    #        plt.scatter(results[0][i], results[1][i], label='Punkty XY', color='red', s=5)
+    if(z == 1):
+        plt.scatter(x, y, label='Punkty XY', color='red', s=5)
+    if(z == 2):
+        plt.plot(results[0], results[1], label='krzywa', color='red', linestyle=':')
+    if(z == 3):
+        for i in range(a):
+            plt.scatter(x[i], y[i], label='Punkty XY', color='red', s=5)
 
     plt.text(centyl_3_wiek[-1], centyl_3_waga[-1], ' c3', verticalalignment='bottom')
     plt.text(centyl_10_wiek[-1], centyl_10_waga[-1], ' c10', verticalalignment='bottom')
@@ -74,9 +75,9 @@ def frame(x,y):
     plt.show(block=False)
     plt.show()
 
-class SecondWindow(QDialog):
+class SecondWindow_for_single(QDialog):
     def __init__(self, parent=None):
-        super(SecondWindow, self).__init__(parent)
+        super(SecondWindow_for_single, self).__init__(parent)
         self.setWindowTitle("Nowe Okno")
 
         layout = QVBoxLayout()
@@ -110,6 +111,53 @@ class SecondWindow(QDialog):
         else:
             self.accept()
             self.submit_button.setEnabled(True)
+class SecondWindow_for_multiple(QDialog):
+    def __init__(self, parent=None):
+        super(SecondWindow_for_multiple, self).__init__(parent)
+        self.setWindowTitle("Nowe Okno")
+
+        layout = QVBoxLayout()
+        self.lineEdit1 = QLineEdit()
+        validator = QDoubleValidator()
+        validator.setDecimals(0)
+        validator.setLocale(QLocale(QLocale.English))
+        self.lineEdit1.setValidator(validator)
+        self.submit_button = QPushButton("Zatwierdź")
+        layout.addWidget(self.lineEdit1)
+        layout.addWidget(self.submit_button)
+        self.setLayout(layout)
+
+        self.submit_button.clicked.connect(self.on_submit_clicked)
+        self.a = None
+
+    def on_submit_clicked(self):
+        try:
+            self.a = int(self.lineEdit1.text())
+            self.x = []
+            self.y = []
+            for i in range(self.a):
+                self.open_second_window_for_single()
+            else:
+                frame(self.x, self.y, 3, self.a)
+
+            if not (100 > self.a > 0 ):
+                raise ValueError("Wartości poza zakresem")
+        except ValueError:
+            self.submit_button.setEnabled(False)
+            self.submit_button.setEnabled(True)
+        else:
+            self.accept()
+            self.submit_button.setEnabled(True)
+
+    def open_second_window_for_single(self):
+        self.second_window = SecondWindow_for_single(self)
+        self.second_window.exec_()
+
+        if self.second_window.result() == QDialog.Accepted:
+            self.x.append(self.second_window.x)
+            self.y.append(self.second_window.y)
+
+
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -126,17 +174,32 @@ class MainWindow(QMainWindow):
         self.button1.setCheckable(True)
         layout.addWidget(self.button1)
 
-        self.second_window = None
-        self.button1.clicked.connect(self.open_second_window)
+        self.button2 = QPushButton("Wiele danych")
+        self.button2.setCheckable(True)
+        layout.addWidget(self.button2)
 
-    def open_second_window(self):
-        self.second_window = SecondWindow(self)
+        self.button3 = QPushButton("Krzywa danych")
+        self.button3.setCheckable(True)
+        layout.addWidget(self.button3)
+
+        self.second_window = None
+        self.button1.clicked.connect(self.open_second_window_for_single)
+        self.button2.clicked.connect(self.open_second_window_for_multiple)
+
+    def open_second_window_for_single(self):
+        self.second_window = SecondWindow_for_single(self)
         self.second_window.exec_()
 
         if self.second_window.result() == QDialog.Accepted:
             x = self.second_window.x
             y = self.second_window.y
-            frame(x, y)
+            frame(x, y, 1, 0)
+
+    def open_second_window_for_multiple(self):
+        self.second_window = SecondWindow_for_multiple(self)
+        self.second_window.exec_()
+
+
 if __name__ == "__main__":
     app = QApplication([])
     window = MainWindow()
