@@ -5,9 +5,21 @@ from PyQt5.QtCore import *
 from Frame import Frame
 
 class SecondWindow_for_single(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, diagram_value ,parent=None):
         super(SecondWindow_for_single, self).__init__(parent)
         self.setWindowTitle("Single")
+        self.Diagram = diagram_value
+
+        if self.Diagram == 1:
+            self.min_x = 3
+            self.max_x = 18
+            self.min_y = 10
+            self.max_y = 100
+        if self.Diagram == 2:
+            self.min_x = 3
+            self.max_x = 18
+            self.min_y = 10
+            self.max_y = 80
 
         layout = QVBoxLayout()
 
@@ -15,12 +27,12 @@ class SecondWindow_for_single(QDialog):
         validator.setDecimals(2)
         validator.setLocale(QLocale(QLocale.English))
 
-        self.text = QLabel("Enter age (3-18)")
+        self.text = QLabel("Enter age (" + str(self.min_x) + "-" + str(self.max_x)+ ")")
 
         self.lineEdit1 = QLineEdit()
         self.lineEdit1.setValidator(validator)
 
-        self.text2 = QLabel("Enter weight (10-100)")
+        self.text2 = QLabel("Enter weight (" + str(self.min_y) + "-" + str(self.max_y) + ")")
 
         self.lineEdit2 = QLineEdit()
         self.lineEdit2.setValidator(validator)
@@ -41,7 +53,7 @@ class SecondWindow_for_single(QDialog):
             self.x = float(self.lineEdit1.text())
             self.y = float(self.lineEdit2.text())
 
-            if not (3 <= self.x <= 18 and 10 <= self.y <= 100):
+            if not (self.min_x <= self.x <= self.max_x and self.min_y <= self.y <= self.max_y):
                 raise ValueError("Value out of range")
         except ValueError:
             self.submit_button.setEnabled(False)
@@ -50,9 +62,10 @@ class SecondWindow_for_single(QDialog):
             self.accept()
             self.submit_button.setEnabled(True)
 class SecondWindow_for_multiple(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, diagram_value, parent=None):
         super(SecondWindow_for_multiple, self).__init__(parent)
         self.setWindowTitle("Multi")
+        self.Diagram = diagram_value
 
         layout = QVBoxLayout()
 
@@ -83,7 +96,7 @@ class SecondWindow_for_multiple(QDialog):
                 self.open_second_window_for_single()
             else:
                 frame = Frame()
-                frame.frame_init(self.Weight, self.Age, 2, self.Repeats)
+                frame.frame_init(self.Weight, self.Age, 2, self.Repeats, self.Diagram)
 
             if not (100 > self.Repeats > 0):
                 raise ValueError("Value out of range")
@@ -95,16 +108,24 @@ class SecondWindow_for_multiple(QDialog):
             self.submit_button.setEnabled(True)
 
     def open_second_window_for_single(self):
-        self.second_window = SecondWindow_for_single(self)
+        self.second_window = SecondWindow_for_single(self.Diagram)
         self.second_window.exec_()
 
         if self.second_window.result() == QDialog.Accepted:
             self.Weight.append(self.second_window.x)
             self.Age.append(self.second_window.y)
 class SecondWindow_for_curve(QDialog):
-    def __init__(self, age, parent=None):
+    def __init__(self, age, diagram_value, parent=None):
         super(SecondWindow_for_curve, self).__init__(parent)
         self.setWindowTitle("Curve")
+        self.Diagram = diagram_value
+
+        if self.Diagram == 1:
+            self.min_y = 10
+            self.max_y = 100
+        if self.Diagram == 2:
+            self.min_y = 10
+            self.max_y = 80
 
         layout = QVBoxLayout()
 
@@ -128,9 +149,9 @@ class SecondWindow_for_curve(QDialog):
 
     def on_submit_clicked(self):
         try:
-            self.x = float(self.lineEdit1.text())
+            self.y = float(self.lineEdit1.text())
 
-            if not (10 <= self.x <= 100):
+            if not (self.min_y <= self.y <= self.max_y):
                 raise ValueError("Value out of range")
         except ValueError:
             self.submit_button.setEnabled(False)

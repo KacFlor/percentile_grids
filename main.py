@@ -11,6 +11,7 @@ import sys
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
+        self.Diagram = 1
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setWindowTitle("KidNet")
         self.setGeometry(200,40,300,300)
@@ -43,8 +44,9 @@ class MainWindow(QMainWindow):
         left_layout.addWidget(self.button_curve)
 
         self.combo_box = QComboBox()
-        self.combo_box.addItems(["Opcja 1", "Opcja 2", "Opcja 3"])
+        self.combo_box.addItems(["body weight to age 3-18 (OLAF)", "body weight to age 3-18 (OLA)"])
         self.combo_box.setFixedSize(250,50)
+        self.combo_box.currentIndexChanged.connect(self.set_diagram_value)
         left_layout.addWidget(self.combo_box)
 
         right_layout.setAlignment(Qt.AlignRight)
@@ -57,38 +59,53 @@ class MainWindow(QMainWindow):
         self.button_curve.clicked.connect(self.open_second_window_for_curve)
 
     def open_second_window_for_single(self):
-        self.second_window = SecondWindow_for_single(self)
+        self.second_window = SecondWindow_for_single(self.Diagram)
         self.second_window.exec_()
 
         if self.second_window.result() == QDialog.Accepted:
             Weight = self.second_window.x
             Age = self.second_window.y
-            frame.frame_init(Weight, Age, 1, 0)
+            frame.frame_init(Weight, Age, 1, 0, self.Diagram)
             self.label_image.setPixmap(QPixmap('percentile_grid.png'))
 
     def open_second_window_for_multiple(self):
-        self.second_window = SecondWindow_for_multiple(self)
+        self.second_window = SecondWindow_for_multiple(self.Diagram)
         self.second_window.exec_()
         self.label_image.setPixmap(QPixmap('percentile_grid.png'))
 
     def open_second_window_for_curve(self):
-        age_current = 3
-        self.Weight = []
-        self.Age = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14,
-                    14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18]
 
-        while age_current <= 18:
+        if self.Diagram == 1:
+            x_current = 3
+            x_end = 18
+            y_data = []
+            x_data = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18]
+        if self.Diagram == 2:
+            x_current = 3
+            x_end = 18
+            y_data = []
+            x_data = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18]
+
+        while x_current <= x_end:
             if self.second_window is not None:
                 self.second_window.deleteLater()
-            self.second_window = SecondWindow_for_curve(age_current, self)
+            self.second_window = SecondWindow_for_curve(x_current, self.Diagram)
             self.second_window.exec_()
             if self.second_window.result() == QDialog.Accepted:
-                self.Weight.append(self.second_window.x)
-            age_current += 0.5
+                y_data.append(self.second_window.y)
+            x_current += 0.5
 
-        if self.Weight:
-            frame.frame_init(self.Weight, self.Age, 3, 0)
+        if y_data:
+            frame.frame_init(y_data, x_data, 3, 0, self.Diagram)
             self.label_image.setPixmap(QPixmap('percentile_grid.png'))
+
+    def set_diagram_value(self, index):
+        if index == 0:
+            self.Diagram = 1
+        elif index == 1:
+            self.Diagram = 2
+        elif index == 2:
+            self.Diagram = 3
 
 if __name__ == "__main__":
     app = QApplication([])
