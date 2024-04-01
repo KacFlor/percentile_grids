@@ -1,0 +1,19 @@
+
+QPushButton {
+    background-color: #007bff; /* Kolor tła */
+    border: none; /* Brak obramowania */
+    color: white; /* Kolor tekstu */
+    padding: 10px 20px; /* Wielkość wewnętrznego marginesu */
+    font-size: 16px; /* Rozmiar czcionki */
+    font-weight: bold; /* Pogrubienie tekstu */
+    border-radius: 5px; /* Zakrzywienie narożników */
+    outline: none; /* Brak obramowania po kliknięciu */
+    cursor: pointer; /* Kursor wskaźnika */
+    transition: background-color 0.3s ease; /* Efekt przejścia */
+
+}
+
+/* Styl przycisków po najechaniu */
+QPushButton:hover {
+    background-color: #0056b3; /* Zmiana koloru tła */
+}
