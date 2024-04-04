@@ -15,11 +15,25 @@ class SecondWindow_for_single(QDialog):
             self.max_x = 18
             self.min_y = 10
             self.max_y = 100
+            self.y_type = "weight"
         if self.Diagram == 2:
             self.min_x = 3
             self.max_x = 18
             self.min_y = 10
             self.max_y = 80
+            self.y_type = "weight"
+        if self.Diagram == 3:
+            self.min_x = 3
+            self.max_x = 18
+            self.min_y = 90
+            self.max_y = 195
+            self.y_type = "height"
+        if self.Diagram == 4:
+            self.min_x = 3
+            self.max_x = 18
+            self.min_y = 90
+            self.max_y = 180
+            self.y_type = "height"
 
         layout = QVBoxLayout()
 
@@ -32,7 +46,7 @@ class SecondWindow_for_single(QDialog):
         self.lineEdit1 = QLineEdit()
         self.lineEdit1.setValidator(validator)
 
-        self.text2 = QLabel("Enter weight (" + str(self.min_y) + "-" + str(self.max_y) + ")")
+        self.text2 = QLabel("Enter " + self.y_type + " (" + str(self.min_y) + "-" + str(self.max_y) + ")")
 
         self.lineEdit2 = QLineEdit()
         self.lineEdit2.setValidator(validator)
@@ -90,13 +104,13 @@ class SecondWindow_for_multiple(QDialog):
     def on_submit_clicked(self):
         try:
             self.Repeats = int(self.lineEdit1.text())
-            self.Weight = []
+            self.y = []
             self.Age = []
             for i in range(self.Repeats):
                 self.open_second_window_for_single()
             else:
                 frame = Frame()
-                frame.frame_init(self.Weight, self.Age, 2, self.Repeats, self.Diagram)
+                frame.frame_init(self.y, self.Age, 2, self.Repeats, self.Diagram)
 
             if not (100 > self.Repeats > 0):
                 raise ValueError("Value out of range")
@@ -112,7 +126,7 @@ class SecondWindow_for_multiple(QDialog):
         self.second_window.exec_()
 
         if self.second_window.result() == QDialog.Accepted:
-            self.Weight.append(self.second_window.x)
+            self.y.append(self.second_window.x)
             self.Age.append(self.second_window.y)
 class SecondWindow_for_curve(QDialog):
     def __init__(self, age, diagram_value, parent=None):
@@ -123,13 +137,23 @@ class SecondWindow_for_curve(QDialog):
         if self.Diagram == 1:
             self.min_y = 10
             self.max_y = 100
+            self.y_type = "weight"
         if self.Diagram == 2:
             self.min_y = 10
             self.max_y = 80
+            self.y_type = "weight"
+        if self.Diagram == 3:
+            self.min_y = 90
+            self.max_y = 195
+            self.y_type = "height"
+        if self.Diagram == 4:
+            self.min_y = 90
+            self.max_y = 180
+            self.y_type = "height"
 
         layout = QVBoxLayout()
 
-        self.text = QLabel("Enter age for weight " + str(age))
+        self.text = QLabel("Enter " + self.y_type + " for age " + str(age))
 
         validator = QDoubleValidator()
         validator.setDecimals(2)

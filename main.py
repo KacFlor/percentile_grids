@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):
         left_layout.addWidget(self.button_curve)
 
         self.combo_box = QComboBox()
-        self.combo_box.addItems(["body weight to age 3-18 (OLAF)", "body weight to age 3-18 (OLA)"])
+        self.combo_box.addItems(["body weight to age 3-18 (OLAF)", "body weight to age 3-18 (OLA)", "height to age 3-18 (OLAF)", "height to age 3-18 (OLA)"])
         self.combo_box.setFixedSize(250,50)
         self.combo_box.currentIndexChanged.connect(self.set_diagram_value)
         left_layout.addWidget(self.combo_box)
@@ -85,6 +85,16 @@ class MainWindow(QMainWindow):
             x_end = 18
             y_data = []
             x_data = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18]
+        if self.Diagram == 3:
+            x_current = 3
+            x_end = 18
+            y_data = []
+            x_data = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18]
+        if self.Diagram == 4:
+            x_current = 3
+            x_end = 18
+            y_data = []
+            x_data = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18]
 
         while x_current <= x_end:
             if self.second_window is not None:
@@ -106,6 +116,8 @@ class MainWindow(QMainWindow):
             self.Diagram = 2
         elif index == 2:
             self.Diagram = 3
+        elif index == 3:
+            self.Diagram = 4
 
 if __name__ == "__main__":
     app = QApplication([])
