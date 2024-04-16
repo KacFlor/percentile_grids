@@ -34,6 +34,12 @@ class SecondWindow_for_single(QDialog):
             self.min_y = 90
             self.max_y = 180
             self.y_type = "height"
+        if self.Diagram == 5:
+            self.min_x = 3
+            self.max_x = 18
+            self.min_y = 13
+            self.max_y = 31
+            self.y_type = "BMI"
 
         layout = QVBoxLayout()
 
@@ -76,10 +82,11 @@ class SecondWindow_for_single(QDialog):
             self.accept()
             self.submit_button.setEnabled(True)
 class SecondWindow_for_multiple(QDialog):
-    def __init__(self, diagram_value, parent=None):
+    def __init__(self, diagram_value ,Name_Grid ,parent=None):
         super(SecondWindow_for_multiple, self).__init__(parent)
         self.setWindowTitle("Multi")
         self.Diagram = diagram_value
+        self.Name = Name_Grid
 
         layout = QVBoxLayout()
 
@@ -110,7 +117,7 @@ class SecondWindow_for_multiple(QDialog):
                 self.open_second_window_for_single()
             else:
                 frame = Frame()
-                frame.frame_init(self.y, self.Age, 2, self.Repeats, self.Diagram)
+                frame.frame_init(self.Name ,self.y, self.Age, 2, self.Repeats, self.Diagram)
 
             if not (100 > self.Repeats > 0):
                 raise ValueError("Value out of range")
@@ -150,6 +157,10 @@ class SecondWindow_for_curve(QDialog):
             self.min_y = 90
             self.max_y = 180
             self.y_type = "height"
+        if self.Diagram == 5:
+            self.min_y = 13
+            self.max_y = 31
+            self.y_type = "BMI"
 
         layout = QVBoxLayout()
 

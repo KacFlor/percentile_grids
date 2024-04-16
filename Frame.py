@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 
 class Frame:
-    def frame_init(self, y_in, age_in, Mode, Repeats, Diagram):
+    def frame_init(self, Grid_Name, y_in, age_in, Mode, Repeats, Diagram):
+        print(str(Grid_Name))
         # -------------------- OLAF for boys 3 - 18 (age to weight)----------------------------------------------------
         if Diagram == 1:
             diagram_x = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
@@ -91,15 +92,56 @@ class Frame:
 
             diagram_x_text = 'Age (years)'
             diagram_y_text = 'Height (cm)'
+        # -------------------BMI (OLAF)---------------------------------------------------------------------------------
+        if Diagram == 5:
+            diagram_x = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+            diagram_y = [13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
 
-        plt.figure(figsize=(6, 9))
-        plt.plot(centile_x, centile_3_y, label='Centile 3', color='black')
-        plt.plot(centile_x, centile_10_y, label='Centile 10', color='black', linestyle='--')
-        plt.plot(centile_x, centile_25_y, label='Centile 25', color='black', linestyle=':')
-        plt.plot(centile_x, centile_50_y, label='Centile 50', color='black', linestyle='solid')
-        plt.plot(centile_x, centile_75_y, label='Centile 75', color='black', linestyle=':')
-        plt.plot(centile_x, centile_90_y, label='Centile 90', color='black', linestyle='--')
-        plt.plot(centile_x, centile_97_y, label='Centile 97', color='black', linestyle='solid')
+            centile_x = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18]
+            centile_minus_twoSD = [13.75, 13.60, 13.5, 13.35, 13.30, 13.20, 13.15, 13.14, 13.15, 13.20, 13.25, 13.30, 13.40, 13.5, 13.60, 13.75, 13.95, 14.05, 14.25, 14.5, 14.75, 14.95, 15.2, 15.5, 15.75, 15.99, 16.2, 16.45, 16.7, 17, 17.3]
+
+            centile_underweight = [14.2, 14.1, 13.9, 13.85, 13.83, 13.82, 13.84, 13.85, 13.9, 13.95, 14, 14.1, 14.2, 14.3, 14.5, 14.70, 14.85, 15, 15.2, 15.4, 15.7, 15.99, 16.2, 16.5, 16.75, 17, 17.3, 17.6, 17.95, 18.2, 18.45]
+
+            centile_minus_oneSD = [14.6, 14.5, 14.4, 14.35, 14.30, 14.26, 14.25, 14.24, 14.26, 14.30, 14.40, 14.55, 14.65, 14.80, 15.01, 15.25, 15.4, 15.6, 15.84, 16.05, 16.3, 16.55, 16.8, 17.05, 17.35, 17.6, 18, 18.3, 18.6, 18.9, 19.2]
+
+            centile_50_y = [15.6, 15.55, 15.53, 15.51, 15.5, 15.52, 15.56, 15.67, 15.85, 16.02, 16.2, 16.35, 16.5, 16.75, 17, 17.25, 17.4, 17.65, 18, 18.3, 18.5, 18.9, 19.2, 19.5, 19.8, 20.2, 20.45, 20.8, 21.2, 21.4, 21.7]
+
+            centile_overweight = [17, 17.03, 17.05, 17.15, 17.25, 17.4, 17.65, 17.8, 18, 18.35, 18.6, 19, 19.4, 19.7, 20.1, 20.4, 20.8, 21.2, 21.4, 21.65, 22, 22.25, 22.65, 22.76, 23.2, 23.5, 23.7, 24, 24.35, 24.65, 24.9 ]
+
+            centile_plus_oneSD = [17.05, 17.08, 17.1, 17.17, 17.28, 17.5, 17.7, 17.9, 18.1, 18.4, 18.7, 19.1, 19.5, 19.9, 20.2, 20.6, 21, 21.3, 21.5, 21.8, 22.1, 22.4, 22.75, 22.9, 23.35, 23.6, 23.9, 24.2, 24.45, 24.75, 25.1]
+
+            centile_85_y = [17.1, 17.15, 17.2, 17.25, 17.45, 17.6, 17.8, 18, 18.2, 18.5, 18.9, 19.3, 19.7, 20.1, 20.3, 20.8, 21.2, 21.4, 21.8, 22, 22.3, 22.5, 22.9, 23.2, 23.6, 23.85, 24.1, 24.3, 24.6, 24.99, 25.3]
+
+            centile_95_y = [18.4, 18.45,  18.5, 18.9, 19.1, 19.4, 19.8, 20.2, 20.7, 21.1, 21.7, 22.1, 22.7, 23.3, 23.85, 24.2, 24.75, 25, 25.27, 25.55, 25.75, 26, 26.2, 26.4, 26.6, 26.8, 27.01, 27.25, 27.6, 27.9, 28.15]
+
+            centile_obesity = [19.5, 19.55, 19.8, 20, 20.4, 20.85, 21.25, 21.75, 22.3, 23, 23.75, 24.4, 25.01, 25.85, 26.5, 27.05, 27.6, 28, 28.3, 28.5, 28.55, 28.57, 28.6, 28.7, 28.9, 29, 29.1, 29.4, 29.6, 29.8, 30.05]
+
+            centile_plus_twoSD = [19.55, 19.60, 19.85, 20.1, 20.5, 20.95, 21.3, 21.9, 22.4, 23.2, 24, 24.55, 25.25, 26, 26.75, 27.3, 27.8, 28.2, 28.5, 28.55, 28.60, 28.7, 28.7, 28.9, 29.05, 29.15, 29.2, 29.45, 29.7, 29.9, 30.2]
+
+            diagram_x_text = 'Age (years)'
+            diagram_y_text = 'BMI (kg/m^2)'
+
+        if 1 <= Diagram <= 4:
+            plt.figure(figsize=(6, 9))
+            plt.plot(centile_x, centile_3_y, label='Centile 3', color='black')
+            plt.plot(centile_x, centile_10_y, label='Centile 10', color='black', linestyle='--')
+            plt.plot(centile_x, centile_25_y, label='Centile 25', color='black', linestyle=':')
+            plt.plot(centile_x, centile_50_y, label='Centile 50', color='black', linestyle='solid')
+            plt.plot(centile_x, centile_75_y, label='Centile 75', color='black', linestyle=':')
+            plt.plot(centile_x, centile_90_y, label='Centile 90', color='black', linestyle='--')
+            plt.plot(centile_x, centile_97_y, label='Centile 97', color='black', linestyle='solid')
+        if Diagram > 4:
+            plt.figure(figsize=(8, 8))
+            plt.plot(centile_x, centile_minus_twoSD, label='Centile minus two', color='blue', linestyle= '--')
+            plt.plot(centile_x, centile_underweight, label='Centile underweight', color='black', linestyle= '--')
+            plt.plot(centile_x, centile_minus_oneSD, label='Centile minus one', color='blue', linestyle='--')
+            plt.plot(centile_x, centile_50_y, label='Centile 50', color='blue', linestyle='solid')
+            plt.plot(centile_x, centile_overweight, label='Centile overweight', color='black', linestyle='solid')
+            plt.plot(centile_x, centile_plus_oneSD, label='Centile plus one', color='blue', linestyle='--')
+            plt.plot(centile_x, centile_85_y, label='Centile 85', color='blue', linestyle='--')
+            plt.plot(centile_x, centile_95_y, label='Centile 95', color='blue', linestyle='--')
+            plt.plot(centile_x, centile_obesity, label='Centile obesity', color='black', linestyle='--')
+            plt.plot(centile_x, centile_plus_twoSD, label='Centile plus two', color='blue', linestyle='--')
         if Mode == 1:
             plt.scatter(y_in, age_in, label='Single Point', color='red', s=5)
         if Mode == 2:
@@ -108,15 +150,18 @@ class Frame:
         if Mode == 3:
             plt.plot(age_in, y_in, label='Curve', color='red', linestyle=':')
 
-        plt.text(centile_x[-1], centile_3_y[-1], ' c3', verticalalignment='bottom')
-        plt.text(centile_x[-1], centile_10_y[-1], ' c10', verticalalignment='bottom')
-        plt.text(centile_x[-1], centile_25_y[-1], ' c25', verticalalignment='bottom')
-        plt.text(centile_x[-1], centile_50_y[-1], ' c50', verticalalignment='bottom')
-        plt.text(centile_x[-1], centile_75_y[-1], ' c75', verticalalignment='bottom')
-        plt.text(centile_x[-1], centile_90_y[-1], ' c90', verticalalignment='bottom')
-        plt.text(centile_x[-1], centile_97_y[-1], ' c97', verticalalignment='bottom')
+        if 1 <= Diagram <= 4:
+            plt.text(centile_x[-1], centile_3_y[-1], ' c3', verticalalignment='bottom')
+            plt.text(centile_x[-1], centile_10_y[-1], ' c10', verticalalignment='bottom')
+            plt.text(centile_x[-1], centile_25_y[-1], ' c25', verticalalignment='bottom')
+            plt.text(centile_x[-1], centile_50_y[-1], ' c50', verticalalignment='bottom')
+            plt.text(centile_x[-1], centile_75_y[-1], ' c75', verticalalignment='bottom')
+            plt.text(centile_x[-1], centile_90_y[-1], ' c90', verticalalignment='bottom')
+            plt.text(centile_x[-1], centile_97_y[-1], ' c97', verticalalignment='bottom')
+        if Diagram > 4:
+            plt.legend(bbox_to_anchor = (1.25, 0.6))
 
-        plt.title('Centile grid')
+        plt.title(str(Grid_Name))
         plt.xlabel(diagram_x_text)
         plt.ylabel(diagram_y_text)
 
